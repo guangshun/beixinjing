@@ -1,4 +1,4 @@
-function CharacterTypeObject(name, id, life, cost, speed, cold, damage, scope, burst, slow, steal, bulletID, bulletSpeed)
+function CharacterTypeObject(name, id, life, cost, speed, cold, damage, scope, burst, slow, steal, bulletID, bulletScope, bulletSpeed)
 {
     //variables
     this.name = name;
