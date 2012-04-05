@@ -2,7 +2,7 @@ function GameProxy (id)
 {
     //variable
     this.id = id;
-    this.name = PROXY_NAME_PREFIX + 'GAME_' + id;
+    this.name = PROXY_NAME_GAME + '_' + id;
     this.scenario = undefined;
     this.waveID = undefined;
     this.enemies = undefined;

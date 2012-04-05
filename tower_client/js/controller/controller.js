@@ -17,29 +17,7 @@ function Command(name, realInstance)
     retrieveFacade().controller.registerCommand(this.name, realInstance);
 }
 
-function Start()
-{
-    this.isStarted = false;
-    this.name = COMMAND_NAME_START;
-
-    var notification = {e: COMMAND_EVENT_START, callback: this.onStart, instance: this, dataObject: null};
-    retrieveFacade().registerNotifier(notification);
-
-
-    this.onStart = function (notification) {
-        assert (notification.e == COMMAND_EVENT_START);
-        assert (!this.isStarted);
-        this.isStarted = true;
-        this.refresh();
-        setInterval(this.refresh, REFRESH_TIME_OUT);
-    }
-    this.refresh = function () {
-        retrieveFacade().sendNotification(COMMAND_EVENT_REFRESH, null);
-    }
-
-    this.command = new Command(this.name, this);
-}
-
+/*
 function Play()
 {
     this.name = COMMAND_NAME_PLAY;
@@ -201,4 +179,4 @@ function canUpgradeDefender (notification) {
     return false;
 }
 
-
+*/

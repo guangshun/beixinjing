@@ -5,18 +5,22 @@ function ModelTest()
         this.tests.push(test);
     }
 
-    this.getScenario = function() {
-        var map = new MapObject(new Array());
-        var enemies = new Array();
-        //insert 2 waves enemies
-        for (var i = 0; i < 2; ++i) {
-            enemies.push(new Array());
-            for (var j = 0; j < 20; ++j) {
-                enemies[i].push({type: 1, level: 1});
+    this.getScenarios = function() {
+        var scenarios = new Array();
+        for (var n = 0; n < 2; ++n) {
+            var map = new MapObject(new Array());
+            var enemies = new Array();
+            //insert 2 waves enemies
+            for (var i = 0; i < 2; ++i) {
+                enemies.push(new Array());
+                for (var j = 0; j < 20; ++j) {
+                    enemies[i].push({type: 1, level: 1});
+                }
             }
+            var scenario = new ScenarioObject(map, enemies);
+            scenarios.push(scenario);
         }
-        var scenario = new ScenarioObject(map, enemies);
-        return scenario;
+        return scenarios;
     }
 
     this.getTowerTypes = function() {
@@ -30,6 +34,7 @@ function ModelTest()
         this.addTest(this.testUnregisterProxy);
         this.addTest(this.testEnemyObject);
         this.addTest(this.testGameProxy);
+        this.addTest(this.testPlayerProxy);
     }
     this.setUp = function () {
         assert (facade == undefined);
@@ -85,11 +90,12 @@ function ModelTest()
 
     this.testGameProxy = function () {
         var gameProxy = new GameProxy(0);
-        var scenario = this.getScenario();
+        var scenarios = this.getScenarios();
+        var scenario = scenarios[0];
         var towerTypes = this.getTowerTypes();
 
         gameProxy.init(scenario, towerTypes);
-        var scenario2 = this.getScenario();
+        var scenario2 = scenarios[1];
         gameProxy.set('scenario', scenario2);
         assert (gameProxy.get('scenario') ==  scenario2);
 
@@ -122,45 +128,33 @@ function ModelTest()
         return true;
     }
 
+    this.testPlayerProxy = function() {
+        var playerProxy = new PlayerProxy();
+        var scenarios = this.getScenarios();
+        var towerTypes = this.getTowerTypes();
+        playerProxy.init(scenarios, towerTypes);
+        assert (playerProxy.get('score') == 0);
+        assert (!playerProxy.get('gameOn'));
+
+        assert (playerProxy.get('money') == 0);
+        playerProxy.set('money', 100);
+        assert (playerProxy.get('money') == 100);
+
+        assert (playerProxy.get('gameID') == -1);
+        playerProxy.set('new', null);
+        assert (playerProxy.get('gameID') == 0);
+        assert (retrieveFacade().retrieveInstance(PROXY_NAME_GAME + '_' + 0));
+
+        playerProxy.set('commit', null);
+        assert (playerProxy.get('gameOn') == false);
+        assert (playerProxy.get('gameID') == 0);
+
+        return true;
+    }
+
     this.testProxy = function () {
     }
 
     this.init();
 }
 
-function TestSuite() 
-{
-    this.tests = new Array();
-    this.setUp = function () {
-        this.tests.push(new ModelTest());
-    }
-    this.tearDown = function () {
-        this.tests = new Array();
-    }
-    this.run = function () {
-        var numTests = 0;
-        var passNumTests = 0;
-        for (var i = 0; i < this.tests.length; ++i) {
-            var test = this.tests[i];
-            for (var j = 0; j < test.tests.length; ++j) {
-                ++numTests;
-                test.setUp();
-                if (test.tests[j].call(test)) {
-                    ++passNumTests;
-                }
-                test.tearDown();
-            }
-        }
-        alert('Total ' + passNumTests + ' of ' + numTests + ' tests passed');
-    }
-}
-
-function startup()
-{
-  var tsts = new TestSuite();
-  tsts.setUp();
-  tsts.run();
-  tsts.tearDown();
-}
-
-$(document).ready(startup);

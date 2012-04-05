@@ -1,28 +1,28 @@
 function PlayerProxy()
 {
     //variable 
-    this.name = PROXY_NAME_PREFIX + 'PLAYER';
+    this.name = PROXY_NAME_PLAYER;
     this.score = undefined;
     this.money = undefined;
     this.scenarios = undefined;
     this.scenarioID = undefined;
     this.towerTypes = undefined;
-    this.bulletTypes = undefined;
     this.gameOn = undefined;
     this.gameID = undefined;
+    this.game = undefined;
 
     this.proxy = null;
 
     //method
-    this.init = function(scenarios, towerTypes, bulletTypes) {
+    this.init = function(scenarios, towerTypes) {
         this.score = 0;
         this.money = 0;
         this.scenarios = scenarios;
         this.scenarioID = 0;
         this.towerTypes = towerTypes;
-        this.bulletTypes = bulletTypes;
         this.gameOn = false;
         this.gameID = -1;
+        this.game = undefined;
         this.proxy = new Proxy(this.name, this);
     }
     this.get = function (property) {
@@ -35,11 +35,13 @@ function PlayerProxy()
             ++this.gameID;
             assert (this.gameID >= 0);
             assert (this.gameID < this.scenarios.length);
-            var game = new GameProxy(this.gameID);
-            game.init(this.scenarios[this.gameID], this.towerTypes, this.bulletTypes);
+            this.game = new GameProxy(this.gameID);
+            this.game.init(this.scenarios[this.gameID], this.towerTypes);
         }
         else if (property == 'commit') {
+            assert (this.gameOn);
             this.gameOn = false;
+            this.game = undefined;
         }
         else  {
             this[property] = value;
