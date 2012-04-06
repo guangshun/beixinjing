@@ -58,6 +58,7 @@ function GameProxy (id)
             }
             else {
                 this.initEnemies();
+                retrieveFacade().sendNotification(EVENT_COMMIT_WAVE_ACK, null);
             }
         }
         else {
@@ -69,9 +70,16 @@ function GameProxy (id)
         var tower = new TowerObject(this.towerTypes[dataObject.towerTypeID], dataObject.level, dataObject.position);
         assert (this.towers[dataObject.position.x + '_' + dataObject.position.y] == undefined);
         this.towers[dataObject.position.x + '_' + dataObject.position.y] = tower;
+        retrieveFacade().sendNotification(EVENT_EMBATTLE_ACK, dataObject);
     }
     this.remove = function (dataObject) {
         assert (this.towers[dataObject.position.x + '_' + dataObject.position.y] != undefined);
         this.towers[dataObject.position.x + '_' + dataObject.position.y] = undefined;
+        retrieveFacade().sendNotification(EVENT_UNEMBATTLE_ACK, dataObject);
+    }
+    this.upgrade = function (dataObject) {
+        assert (this.towers[dataObject.position.x + '_' + dataObject.position.y] != undefined);
+        ++this.towers[dataObject.position.x + '_' + dataObject.position.y].level;
+        retrieveFacade().sendNotification(EVENT_UPGRADE_ACK, dataObject);
     }
 }

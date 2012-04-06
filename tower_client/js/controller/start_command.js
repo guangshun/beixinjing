@@ -24,7 +24,7 @@ function StartCommand()
     }
 
     this.onStart = function (notification) {
-        assert (notification.e == COMMAND_EVENT_START);
+        assert (notification.e == EVENT_START);
         this.player.set('new', null);
         
         //this.refresh();
@@ -32,11 +32,11 @@ function StartCommand()
     }
     /*
     this.refresh = function () {
-        retrieveFacade().sendNotification(COMMAND_EVENT_REFRESH, null);
+        retrieveFacade().sendNotification(EVENT_REFRESH, null);
     }
     */
 
-    var notification = {e: COMMAND_EVENT_START, callback: this.onStart, instance: this, dataObject: null};
+    var notification = {e: EVENT_START, callback: this.onStart, instance: this, dataObject: null};
     retrieveFacade().registerNotifier(notification);
 
 

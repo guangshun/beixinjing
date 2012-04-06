@@ -16,7 +16,7 @@ function PlayerProxy()
     //method
     this.init = function(scenarios, towerTypes) {
         this.score = 0;
-        this.money = 0;
+        this.money = PLAYER_INIT_MONEY;
         this.scenarios = scenarios;
         this.scenarioID = 0;
         this.towerTypes = towerTypes;
@@ -42,6 +42,7 @@ function PlayerProxy()
             assert (this.gameOn);
             this.gameOn = false;
             this.game = undefined;
+            retrieveFacade().sendNotification(EVENT_COMMIT_GAME_ACK, null);
         }
         else  {
             this[property] = value;

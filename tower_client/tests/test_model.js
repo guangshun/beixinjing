@@ -93,6 +93,15 @@ function ModelTest()
         var scenarios = this.getScenarios();
         var scenario = scenarios[0];
         var towerTypes = this.getTowerTypes();
+        this.getNotification = false;
+        this.dummyCallback = function (notification) {
+            this.getNotification = true;
+        }
+        retrieveFacade().registerNotifier({e:EVENT_COMMIT_GAME, callback: this.dummyCallback, instance: this});
+        retrieveFacade().registerNotifier({e:EVENT_EMBATTLE_ACK, callback: this.dummyCallback, instance: this});
+        retrieveFacade().registerNotifier({e:EVENT_UNEMBATTLE_ACK, callback: this.dummyCallback, instance: this});
+        retrieveFacade().registerNotifier({e:EVENT_COMMIT_WAVE_ACK, callback: this.dummyCallback, instance: this});
+
 
         gameProxy.init(scenario, towerTypes);
         var scenario2 = scenarios[1];
@@ -103,24 +112,26 @@ function ModelTest()
 
         //test add/remove 
         var dataObject =  {towerTypeID: 0, level: 1234, position: {x: 10, y: 10}};
+        assert (!this.getNotification);
         assert (gameProxy.towers['10_10'] == undefined);
         gameProxy.add(dataObject);
+        assert (this.getNotification);
         assert (gameProxy.towers['10_10'].level = 1234);
+        this.getNotification = false;
         assert (gameProxy.towers['10_10'].type.id == 0);
         gameProxy.remove({position: {x:10, y:10}});
         assert (gameProxy.towers['10_10'] == undefined);
+        assert (this.getNotification);
+        this.getNotification = false;
 
         //test commit
+        this.getNotification = false;
+        assert (!this.getNotification);
         assert (gameProxy.get('waveID') == 0);
         gameProxy.set('commit', null);
         assert (gameProxy.get('waveID') == 1);
-
+        assert (this.getNotification);
         this.getNotification = false;
-        this.dummyCallback = function (notification) {
-            this.getNotification = true;
-        }
-
-        retrieveFacade().registerNotifier({e:EVENT_COMMIT_GAME, callback: this.dummyCallback, instance: this});
 
         gameProxy.set('commit', null);
         assert (gameProxy.get('waveID') == scenario2.enemies.length);
@@ -129,6 +140,12 @@ function ModelTest()
     }
 
     this.testPlayerProxy = function() {
+        this.getNotification = false;
+        this.dummyCallback = function (notification) {
+            this.getNotification = true;
+        }
+        retrieveFacade().registerNotifier({e:EVENT_COMMIT_GAME_ACK, callback: this.dummyCallback, instance: this});
+
         var playerProxy = new PlayerProxy();
         var scenarios = this.getScenarios();
         var towerTypes = this.getTowerTypes();
@@ -136,7 +153,7 @@ function ModelTest()
         assert (playerProxy.get('score') == 0);
         assert (!playerProxy.get('gameOn'));
 
-        assert (playerProxy.get('money') == 0);
+        assert (playerProxy.get('money') == PLAYER_INIT_MONEY);
         playerProxy.set('money', 100);
         assert (playerProxy.get('money') == 100);
 
@@ -145,9 +162,11 @@ function ModelTest()
         assert (playerProxy.get('gameID') == 0);
         assert (retrieveFacade().retrieveInstance(PROXY_NAME_GAME + '_' + 0));
 
+        assert (!this.getNotification);
         playerProxy.set('commit', null);
         assert (playerProxy.get('gameOn') == false);
         assert (playerProxy.get('gameID') == 0);
+        assert (this.getNotification);
 
         return true;
     }

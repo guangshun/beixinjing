@@ -1,4 +1,3 @@
-var EVENT_COMMIT_GAME = 'event_commit_game';
 var REFRESH_TIME_OUT = 60000;
 var VIEW_REFRESH_TIME_OUT = 20;
 var SLOW_COUNT = 10;
@@ -7,6 +6,7 @@ var ENEMY_INDEX_BLOCK= 40;
 var ENEMY_LAZY = (1000/VIEW_REFRESH_TIME_OUT);
 var ENEMY_LAZY_INTERLEAVE = 50;
 var BULLET_SPEED = 5;
+var UPGRADE_COST_RATIO = 1/4;
 
 var PROXY_EVENT_UPDATE = 'proxy_update';
 
@@ -40,21 +40,23 @@ var COMMAND_NAME_PLAY_SNAPSHOT = 'command_name_play_snapshot';
 var COMMAND_NAME_COMMIT = 'command_name_commit';
 var COMMAND_NAME_REFRESH = 'command_name_refresh';
 var COMMAND_NAME_EMBATTLE = 'command_name_embattle';
-var COMMAND_NAME_REMOVE_DEFENDER = 'command_name_remove_defender';
-var COMMAND_NAME_UPGRADE_DEFENDER = 'command_name_upgrade_defender';
+var COMMAND_NAME_UNEMBATTLE = 'command_name_unembattle';
+var COMMAND_NAME_UPGRADE = 'command_name_upgrade';
 
-var COMMAND_EVENT_START = 'command_event_start';
-var COMMAND_EVENT_PLAY = 'command_event_play';
-var COMMAND_EVENT_PLAY_SNAPSHOT = 'command_event_play_snapshot';
-var COMMAND_EVENT_COMMIT = 'command_event_commit';
-var COMMAND_EVENT_COMMIT_ACK = 'command_event_commit_ack';
-var COMMAND_EVENT_REFRESH = 'command_event_refresh';
-var COMMAND_EVENT_EMBATTLE = 'command_event_embattle';
-var COMMAND_EVENT_EMBATTLE_ACK = 'command_event_embattle_ack';
-var COMMAND_EVENT_REMOVE_DEFENDER = 'command_event_remove_defender';
-var COMMAND_EVENT_REMOVE_DEFENDER_ACK = 'command_event_remove_defender_ack';
-var COMMAND_EVENT_UPGRADE_DEFENDER = 'command_event_upgrade_defender';
-var COMMAND_EVENT_UPGRADE_DEFENDER_ACK = 'command_event_upgrade_defender_ack';
+var EVENT_START = 'event_start';
+var EVENT_PLAY = 'event_play';
+var EVENT_PLAY_SNAPSHOT = 'event_play_snapshot';
+var EVENT_COMMIT_WAVE = 'event_commit_wave';
+var EVENT_COMMIT_WAVE_ACK = 'event_commit_wave_ack';
+var EVENT_COMMIT_GAME = 'event_commit_game';
+var EVENT_COMMIT_GAME_ACK = 'event_commit_game_ack';
+var EVENT_REFRESH = 'event_refresh';
+var EVENT_EMBATTLE = 'event_embattle';
+var EVENT_EMBATTLE_ACK = 'event_embattle_ack';
+var EVENT_UNEMBATTLE = 'event_unembattle';
+var EVENT_UNEMBATTLE_ACK = 'event_unembattle_ack';
+var EVENT_UPGRADE = 'event_upgrade';
+var EVENT_UPGRADE_ACK = 'event_upgrade_ack';
 
 var SCENARIO_MAP = [];
 SCENARIO_MAP.push([
@@ -83,6 +85,8 @@ SCENARIO_MAP.push([
         [MAP_DEFENDABLE, MAP_DEFENDABLE, MAP_DOWN, MAP_PASS_ROAD, MAP_PASS_ROAD, MAP_LEFT, MAP_DEFENDABLE, MAP_DEFENDABLE, MAP_DEFENDABLE, MAP_DEFENDABLE],  
         [MAP_DEFENDABLE, MAP_DEFENDABLE, MAP_DEFENDABLE, MAP_DEFENDABLE, MAP_DEFENDABLE, MAP_DEFENDABLE, MAP_DEFENDABLE, MAP_DEFENDABLE, MAP_DEFENDABLE, MAP_DEFENDABLE]
         ]); 
+
+var PLAYER_INIT_MONEY = 1000;
 
 var TOWER_TYPES = [
 {name: 'tower_0', id: 0, life: 100, cost: 50, speed: 2, cold: 100, damage: 20, scope: 50, burst: 1, slow: 0, steal: 0, bulletID: 1, bulletScope: 0, bulletSpeed: 5},
