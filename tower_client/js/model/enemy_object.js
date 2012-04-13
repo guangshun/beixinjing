@@ -1,4 +1,4 @@
-function EnemyObject(type, level)
+function EnemyObject(type, level, id)
 {
     //variables
     this.type = type;
@@ -6,13 +6,14 @@ function EnemyObject(type, level)
     this.life = 0;
     this.speed = 0;
     this.level = level;
+    this.id = id;
     //method
-    this.init = function () {
+    this.construct = function () {
         this.life = this.type.life * this.level;
         this.speed = this.type.speed * this.level;
     }
     this.setDiedAt = function (diedAt) {
         this.diedAt = diedAt;
     }
-    this.init();
+    this.construct();
 }

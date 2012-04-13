@@ -17,36 +17,7 @@ function Mediator(name, realInstance)
     retrieveFacade().viewer.registerMediator(name, realInstance);
 }
 
-function BackGround(canvas)
-{
-    this.name = MEDIATOR_NAME_BACKGROUND;
-    this.canvas = canvas;
-    this.ctx = this.canvas.getContext("2d");
-    this.draw = function (scenario) {
-        var i, j;
-        for (i = 0; i < scenario.col; ++i) {
-            for (j = 0; j < scenario.col; ++j) {
-                var type = scenario.map[i][j];
-                if (isRoad(type))
-                {
-                    retrieveFacade().graphics.fillRect(this.ctx, i*scenario.blockSize, j*scenario.blockSize, scenario.blockSize, scenario.blockSize, 'black');
-                }
-                else if (isDefendable(type)) {
-                    retrieveFacade().graphics.drawRect(this.ctx, i*scenario.blockSize, j*scenario.blockSize, scenario.blockSize, scenario.blockSize, 'red');
-                }
-                else {
-                    assert (isNothing(type));
-                    retrieveFacade().graphics.fillRect(this.ctx, i*scenario.blockSize, j*scenario.blockSize, scenario.blockSize, scenario.blockSize, 'gray');
-                }
-            }
-        }
-    }
-    this.draw(retrieveFacade().retrieveInstance(PROXY_NAME_SCENARIO));
-
-    this.mediator = new Mediator(this.name, this);
-}
-
-
+/*
 function Enemies(canvas, enemies)
 {
     this.canvas = canvas;
@@ -154,33 +125,7 @@ function Enemy(canvas, img, dataObject, width, height, stageDelayCount, scenario
 
 
 
-//get X,Y in the grid which is composited by block.
-function getGridXY(screenX, screenY, blockSize)
-{
-    var x = parseInt(screenX/blockSize, 10);
-    var y = parseInt(screenY/blockSize, 10);
-    return {'x': x, 'y': y};
-}
 
-//test if hit the middle point of the block
-function isHitBlockMiddle(screenX, screenY, blockSize)
-{
-    var border = blockSize / 8;
-    var middle = blockSize / 2;
-    var leftoverX = screenX % blockSize;
-    var leftoverY = screenY % blockSize;
-    var distanceX = leftoverX < middle ? middle - leftoverX : leftoverX - middle;
-    var distanceY = leftoverY < middle ? middle - leftoverY : leftoverY - middle;
-    return (distanceX < border && distanceY < border);
-}
-
-
-function getScreenXY(x, y, blockSize)
-{
-    var x = x * blockSize;
-    var y = y* blockSize;
-    return {'x': x, 'y': y};
-}
 
 
 function GameView(canvas, img)
@@ -486,5 +431,36 @@ function BulletObject(img, enemy, bulletType, x, y, width, height)
             this.isOver = true;
         }
     }
+}
+*/
+
+//test if hit the middle point of the block
+function isHitBlockMiddle(screenX, screenY)
+{
+    var blockSize = MAP_BLOCK_SIZE;
+    var border = blockSize / 8;
+    var middle = blockSize / 2;
+    var leftoverX = screenX % blockSize;
+    var leftoverY = screenY % blockSize;
+    var distanceX = leftoverX < middle ? middle - leftoverX : leftoverX - middle;
+    var distanceY = leftoverY < middle ? middle - leftoverY : leftoverY - middle;
+    return (distanceX < border && distanceY < border);
+}
+
+
+function getScreenXY(x, y)
+{
+    var x = x * MAP_BLOCK_SIZE;
+    var y = y* MAP_BLOCK_SIZE;
+    return {'x': x, 'y': y};
+}
+
+//get X,Y in the grid which is composited by block.
+function getGridXY(screenX, screenY)
+{
+    var blockSize = MAP_BLOCK_SIZE;
+    var x = parseInt(screenX/blockSize, 10);
+    var y = parseInt(screenY/blockSize, 10);
+    return {'x': x, 'y': y};
 }
 

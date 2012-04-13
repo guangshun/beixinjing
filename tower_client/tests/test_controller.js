@@ -13,17 +13,13 @@ function ControllerTest()
         this.addTest(this.testCommitCommand);
     }
     this.setUp = function () {
-        assert (facade == undefined);
-        var model = new Model();
-        var viewer = new Viewer();
-        var controller = new Controller();
-        initFacade(model, viewer, controller);
     }
     this.tearDown = function () {
         resetFacade();
     }
     this.testStartCommand = function () {
         var start = new StartCommand();
+        start.initViewer = function () { }
         start.init();
         assert (!start.player.gameOn);
         assert (start.player.gameID == -1);
@@ -35,6 +31,7 @@ function ControllerTest()
 
     this.testEmbattleCommand = function() {
         var start = new StartCommand();
+        start.initViewer = function () { }
         start.init();
         retrieveFacade().sendNotification(EVENT_START, null);
 
@@ -62,6 +59,7 @@ function ControllerTest()
 
     this.testUnembattleCommand = function() {
         var start = new StartCommand();
+        start.initViewer = function () { }
         start.init();
         retrieveFacade().sendNotification(EVENT_START, null);
 
@@ -90,6 +88,7 @@ function ControllerTest()
 
     this.testUpgradeCommand = function() {
         var start = new StartCommand();
+        start.initViewer = function () { }
         start.init();
         retrieveFacade().sendNotification(EVENT_START, null);
 
@@ -128,6 +127,7 @@ function ControllerTest()
 
     this.testCommitCommand = function() {
         var start = new StartCommand();
+        start.initViewer = function () { }
         start.init();
         retrieveFacade().sendNotification(EVENT_START, null);
 

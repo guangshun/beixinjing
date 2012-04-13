@@ -12,20 +12,22 @@ function CommitCommand()
 
     this.onCommitAck = function (notification) {
         assert (notification.e == EVENT_COMMIT_WAVE_ACK);
-        //retrieveFacade().retrieveInstance(MEDIATOR_NAME_TOWERVIEW).addTower(notification.dataObject);
+        retrieveFacade().sendNotification(EVENT_START, null);
     }
 
     this.onCommitGame = function (notification) {
         assert (notification.e == EVENT_COMMIT_GAME);
         retrieveFacade().retrieveInstance(PROXY_NAME_PLAYER).set('commit', null);
+        retrieveFacade().retrieveInstance(PROXY_NAME_PLAYER).set('new', null);
     }
 
     this.onCommitGameAck = function (notification) {
         assert (notification.e == EVENT_COMMIT_GAME_ACK);
-        //retrieveFacade().retrieveInstance(MEDIATOR_NAME_TOWERVIEW).addTower(notification.dataObject);
+        if (retrieveFacade().retrieveInstance(PROXY_NAME_PLAYER).gameOver()) {
+            alert('you win');
+            retrieveFacade().resetViewer();
+        }
     }
-
-
 
     var notification = {e: EVENT_COMMIT_WAVE, callback: this.onCommit, instance: this, dataObject: null};
     retrieveFacade().registerNotifier(notification);

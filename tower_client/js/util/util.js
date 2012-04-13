@@ -21,7 +21,8 @@ function Graphics()
    this.drawText = function(cxt,string,x,y,color){
          cxt.fillStyle = color;
          //FIXME: need remove font
-         cxt.font = 'bold 12px sans-serif';
+         //cxt.font = 'bold 12px sans-serif';
+         cxt.font = '12px sans-serif';
          cxt.fillText(string,x,y);
     }
 	this.fillRect = function(cxt,x,y,width,height,color){
@@ -86,10 +87,11 @@ Array.prototype.index = function(obj){
 	return -1;
 }
 Array.prototype.remove = function(obj){
-	for(var i=0,l=this.length;i<l;i++){
+	forvar i=0,l=this.length;i<l;i++){
 		if(obj == this[i]) {
-			this.splice(i,1);
+			is.splice(i,1);
 			break;
 		}
 }
 */
+

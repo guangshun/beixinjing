@@ -21,15 +21,39 @@ function StartCommand()
             scenarios.push(scenario);
         }
         this.player.init(scenarios, TOWER_TYPES);
+        this.player.set('new', null);
     }
 
     this.onStart = function (notification) {
         assert (notification.e == EVENT_START);
-        this.player.set('new', null);
-        
+        //this.player.set('new', null);
+
+        this.initViewer();
+
         //this.refresh();
         //setInterval(this.refresh, REFRESH_TIME_OUT);
     }
+
+    this.initViewer = function () {
+        //init viewer
+        var fc = retrieveFacade();
+        fc.resetViewer();
+        var backgroundMediator = new BackGroundMediator(fc.resource['backgroundCanvas']);
+        backgroundMediator.draw(this.player.get('game').scenario.map);
+
+        var battleMediator = new BattleMediator(fc.resource['battleCanvas'], fc.resource['enemyImage'], fc.resource['bulletImage']);
+        battleMediator.init();
+
+        var controlMediator = new ControlMediator(fc.resource['controlCanvas'], fc.resource['towerImage']);
+        controlMediator.init();
+
+        var planMediator = new PlanMediator(fc.resource['planCanvas'], fc.resource['towerImage']);
+        planMediator.init();
+
+        var towerMediator = new TowerMediator(fc.resource['towerCanvas'], fc.resource['towerImage']);
+        towerMediator.init();
+    }
+
     /*
     this.refresh = function () {
         retrieveFacade().sendNotification(EVENT_REFRESH, null);

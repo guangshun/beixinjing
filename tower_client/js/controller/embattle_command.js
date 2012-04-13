@@ -22,9 +22,8 @@ function EmbattleCommand()
 
     this.onEmbattleAck = function (notification) {
         assert (notification.e == EVENT_EMBATTLE_ACK);
-        //retrieveFacade().retrieveInstance(MEDIATOR_NAME_TOWERVIEW).addTower(notification.dataObject);
+        retrieveFacade().retrieveInstance(MEDIATOR_NAME_TOWER).addTower(notification.dataObject);
     }
-
 
     var notification = {e: EVENT_EMBATTLE, callback: this.onEmbattle, instance: this, dataObject: null};
     retrieveFacade().registerNotifier(notification);

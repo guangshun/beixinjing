@@ -11,9 +11,8 @@ function UnembattleCommand()
 
     this.onUnembattleAck = function (notification) {
         assert (notification.e == EVENT_UNEMBATTLE_ACK);
-        //retrieveFacade().retrieveInstance(MEDIATOR_NAME_TOWERVIEW).removeTower(notification.dataObject);
+        retrieveFacade().retrieveInstance(MEDIATOR_NAME_TOWER).refresh();
     }
-
 
     var notification = {e: EVENT_UNEMBATTLE, callback: this.onUnembattle, instance: this, dataObject: null};
     retrieveFacade().registerNotifier(notification);

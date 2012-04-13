@@ -1,0 +1,1 @@
+function GameMediator(canvas, towerImage)

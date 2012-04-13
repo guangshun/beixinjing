@@ -1,32 +1,52 @@
 var facade = undefined;
 
-function Facade(model, viewer, controller)
+function Facade()
 {
-    this.model = model;
-    this.viewer = viewer;
-    this.controller = controller;
+    //variables
+    this.model = undefined;
+    this.viewer = undefined;
+    this.controller = undefined;
     this.notifiers = new Object;
     this.graphics = new Graphics();
+    this.resource = new Object();
+
+    //method
     this.registerNotifier = registerNotifier;
     this.sendNotification = sendNotification;
     this.retrieveInstance = retrieveInstance;
+    this.resetViewer = resetViewer;
+
+    this.construct = function () {
+        this.model = new Model();
+        this.viewer = new Viewer();
+        this.controller = new Controller();
+    }
+
+    this.construct();
+
 }
 
-function initFacade(model, viewer, controller)
+function resetViewer()
 {
-    assert (facade == undefined);
-    facade = new Facade(model, viewer, controller);
+    assert (this.viewer);
+    //FIXME: how to iterate all?
+    for (var m in this.viewer.mediators) {
+        if (this.viewer.mediators[m].destruct != undefined) 
+            this.viewer.mediators[m].destruct();
+    }
+    this.viewer = new Viewer();
 }
 
 function resetFacade()
 {
     assert (facade);
-    facade = undefined;
+    facade = new Facade();
 }
 
 function retrieveFacade()
 {
-    assert(facade);
+    if (facade == undefined)
+        facade = new Facade();
     return facade;
 }
 
@@ -63,4 +83,6 @@ function retrieveInstance(name)
     assert (this.controller.commands[name])
     return this.controller.commands[name];
 }
+
+
 

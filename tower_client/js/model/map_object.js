@@ -24,7 +24,7 @@ function MapObject(mapData)
         this.starts = new Array();
         this.finishes = new Array();
         for (var i = 0; i < mapData.length; ++i) {
-            for (var j = 0; j < mapData[i]; ++j) {
+            for (var j = 0; j < mapData[i].length; ++j) {
                 var position = {x:i, y:j};
                 var data = this.getData(position);
                 assert (this.isValid(data));
@@ -34,6 +34,8 @@ function MapObject(mapData)
                     this.finishes.push(position);
             }
         }
+        assert (this.starts.length || !mapData.length);
+        assert (this.finishes.length || !mapData.length);
     }
 
     this.getData = function (position) {
@@ -56,25 +58,53 @@ function MapObject(mapData)
         return this.isStart(data) || this.isFinish(data) || this.isDirection(data) || data == MAP_PASS_ROAD;
     }
 
+    this.isNothing = function (data) {
+        return data == MAP_NOTHING;
+    }
+
     this.isDefendable = function(data) {
         return data & MAP_DEFENDABLE;
     }
 
-    this.getStart = function() {
-        return this.starts;
+    this.getStart = function(id) {
+        if (id == undefined) {
+            return this.starts;
+        }
+        else {
+            return this.starts[id % this.starts.length];
+        }
     }
 
     this.getFinish = function () {
         return this.finishes;
     }
 
-    this.getDirection = function(position) {
-        return 
+    this.getDirection = function(data, id) {
+        var d = data & MAP_DIRECTION_MASK;
+        var directions = new Array();
+        if (d & MAP_DOWN)
+            directions.push({x:0, y:1});
+        if (d & MAP_UP)
+            directions.push({x:0, y:-1});
+        if (d & MAP_LEFT)
+            directions.push({x:-1, y:0});
+        if (d & MAP_RIGHT)
+            directions.push({x:1, y:0});
+        assert (directions.length);
+        return directions[id % directions.length];
     }
 
     this.isValid = function (data) {
         assert (!this.isRoad(data) || !this.isDefendable(data) || data == this.MAP_NOTHING);
         return true;
+    }
+
+    this.getNumRow = function (){
+        return this.mapData.length;
+    }
+
+    this.getNumCol = function() {
+        return this.mapData[0].length;
     }
 
     this.init(this.mapData);

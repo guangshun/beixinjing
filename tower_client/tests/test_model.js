@@ -37,11 +37,6 @@ function ModelTest()
         this.addTest(this.testPlayerProxy);
     }
     this.setUp = function () {
-        assert (facade == undefined);
-        var model = new Model();
-        var viewer = new Viewer();
-        var controller = new Controller();
-        initFacade(model, viewer, controller);
     }
     this.tearDown = function () {
         resetFacade();

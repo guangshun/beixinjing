@@ -4,6 +4,7 @@ function PlayerProxy()
     this.name = PROXY_NAME_PLAYER;
     this.score = undefined;
     this.money = undefined;
+    this.life = undefined;
     this.scenarios = undefined;
     this.scenarioID = undefined;
     this.towerTypes = undefined;
@@ -17,6 +18,7 @@ function PlayerProxy()
     this.init = function(scenarios, towerTypes) {
         this.score = 0;
         this.money = PLAYER_INIT_MONEY;
+        this.life = INIT_LIFE;
         this.scenarios = scenarios;
         this.scenarioID = 0;
         this.towerTypes = towerTypes;
@@ -53,5 +55,8 @@ function PlayerProxy()
     }
     this.remove = function () {
         assert (false && 'not implement yet');
+    }
+    this.gameOver = function () {
+        return !this.gameOn && this.gameID == this.scenarios.length;
     }
 }

@@ -1,12 +1,16 @@
 var REFRESH_TIME_OUT = 60000;
 var VIEW_REFRESH_TIME_OUT = 20;
-var SLOW_COUNT = 10;
-var ENEMY_SPEED = 2;
+var ENEMY_SLOW_COUNT = 10;
 var ENEMY_INDEX_BLOCK= 40;
+var ENEMY_IMAGE_BLOCK_SIZE = 40;
+var TOWER_IMAGE_BLOCK_SIZE = 50;
+var BULLET_IMAGE_BLOCK_SIZE = 50;
+var BUTTON_IMAGE_BLOCK_SIZE = 50;
 var ENEMY_LAZY = (1000/VIEW_REFRESH_TIME_OUT);
 var ENEMY_LAZY_INTERLEAVE = 50;
 var BULLET_SPEED = 5;
 var UPGRADE_COST_RATIO = 1/4;
+var INIT_LIFE = 10;
 
 var PROXY_EVENT_UPDATE = 'proxy_update';
 
@@ -26,13 +30,15 @@ var MAP_START  = 32;
 var MAP_FINISH = 64;
 var MAP_DEFENDABLE = 128;
 
+var MAP_BLOCK_SIZE = 50;
+var CONTROL_BLANK_WIDTH = 20;
+
 
 var MEDIATOR_NAME_BACKGROUND = 'mediator_background';
-var MEDIATOR_NAME_ENEMIES = 'mediator_enemies';
-var MEDIATOR_NAME_GAMEVIEW = 'mediator_gameview';
-var MEDIATOR_NAME_BATTLEVIEW = 'mediator_battleview';
-var MEDIATOR_NAME_TOWERVIEW = 'mediator_towerview';
-var MEDIATOR_NAME_BULLETVIEW = 'mediator_bulletview';
+var MEDIATOR_NAME_BATTLE = 'mediator_battle';
+var MEDIATOR_NAME_TOWER = 'mediator_tower';
+var MEDIATOR_NAME_PLAN = 'mediator_plan';
+var MEDIATOR_NAME_CONTROL = 'mediator_control';
 
 var COMMAND_NAME_START = 'command_name_start';
 var COMMAND_NAME_PLAY = 'command_name_play';
@@ -94,7 +100,7 @@ var TOWER_TYPES = [
 ];
 
 var ENEMY_TYPES = [
-{name: 'enemy_0', id: 0, life: 100, cost: 50, speed: 2, cold: 100, damage: 20, scope: 50, burst: 1, slow: 0, steal: 0, bulletID: 1, bulletScope: 0, bulletSpeed: 5},
+{name: 'enemy_0', id: 0, life: 100, cost: 50, speed: 10, cold: 100, damage: 20, scope: 50, burst: 1, slow: 0, steal: 0, bulletID: 1, bulletScope: 0, bulletSpeed: 5},
 {name: 'enemy_1', id: 1, life: 150, cost: 100, speed: 2, cold: 100, damage: 30, scope: 70, burst: 1, slow: 0, steal: 0, bulletID: 2, bulletScope: 0, bulletSpeed: 5}
 ];
 

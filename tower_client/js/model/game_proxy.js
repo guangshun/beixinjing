@@ -26,7 +26,7 @@ function GameProxy (id)
         this.enemies = new Array();
         for (var i = 0; i < this.scenario.enemies[this.waveID].length; ++i) {
             var obj = this.scenario.enemies[this.waveID][i];
-            var enemy = new EnemyObject(obj.type, obj.level);
+            var enemy = new EnemyObject(obj.type, obj.level, i);
             this.enemies.push(enemy);
         }
     }
